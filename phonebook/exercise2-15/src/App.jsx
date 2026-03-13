@@ -25,7 +25,7 @@ const App = () => {
 
   if (existingPerson) {
      //shallow copy
-    const changePerson = { ...existingPerson, number: newNumber, name: newName }
+    const changePerson = { ...existingPerson, number: newNumber}
      //confirmation and delete
     if (window.confirm(`${newName} is already added. Replace the old number?`)) {
       personServices
