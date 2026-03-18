@@ -1,121 +1,115 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [value, setValue] = useState('');
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+
+  // Fetch all countries once on mount
+  useEffect(() => {
+    console.log('effect run')
+    axios.get('https://studies.cs.helsinki.fi/restcountries/api/all')
+      .then(response => {
+        console.log('data arrived', response.data)
+        setCountries(response.data)
+      })
+      .catch(error => {
+        console.log('error happened', error)
+      });
+  }, []);
+
+  const handleSearchCountries = (event) => {
+    setValue(event.target.value);
+    setSelectedCountry(null); // reset when typing
+  }
+
+
+
+  // Filter countries based on search input
+  const filteredCountries = countries.filter(country =>
+    country.name.common.toLowerCase().includes(value.toLowerCase())
+  );
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
+    <div>
+      <h1>information related to different countries in a so-called machine-readable format via the REST API.</h1>
+      <input
+        value={value}
+        onChange={handleSearchCountries}
+        placeholder="Search countries..."
+      />
+
+      {filteredCountries.length === 1 && (
+        // Exactly one country → show full details
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
+          <h1>{filteredCountries[0].name.common}</h1>
+          <div>
+            Capital {filteredCountries[0].capital}
+          </div>
+          <div>
+            Area {filteredCountries[0].area}
+          </div>
+          <h1>Languages</h1>
           <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
+            {/* Languages as separate li items */}
+            {filteredCountries[0].languages &&
+              Object.values(filteredCountries[0].languages).map((lang, index) => (
+                <li key={index}> {lang}</li>
+              ))}
           </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          <img src={filteredCountries[0].flags.png} alt={`${filteredCountries[0].name.common} flag`} width="150" />
+        </div>
+      )}
+
+      {filteredCountries.length > 1 && filteredCountries.length <= 10 && (
+        // 2–10 countries → show only names
+        <div>
+          {filteredCountries.map(country => (
+            <div key={country.name.common}>
+              {country.name.common}
+              <button onClick={() => setSelectedCountry(country)}>
+                Show
+              </button>
+            </div>
+          ))}
+
+          {selectedCountry && (
+            <div>
+              <h1>{selectedCountry.name.common}</h1>
+
+              <div>
+                Capital {selectedCountry.capital}
+              </div>
+
+              <div>
+                Area {selectedCountry.area}
+              </div>
+
+              <h1>Languages</h1>
+              <ul>
+                {selectedCountry.languages &&
+                  Object.values(selectedCountry.languages).map((lang, index) => (
+                    <li key={index}>{lang}</li>
+                  ))}
+              </ul>
+
+              <img
+                src={selectedCountry.flags.png}
+                alt={`${selectedCountry.name.common} flag`}
+                width="150"
+              />
+            </div>
+          )}
+        </div>
+      )}
+
+      {filteredCountries.length > 10 && (
+        <p>Too many matches, specify another filter.</p>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
