@@ -26,6 +26,7 @@ function App() {
       });
   }, []);
 
+  //useEffect for fetching open weather map
   useEffect(() => {
     if (!selectedCountry && filteredCountries.length !== 1) return;
 
@@ -46,9 +47,6 @@ function App() {
     setSelectedCountry(null); // reset when typing
   }
 
-
-
- 
 
   return (
     <div>
