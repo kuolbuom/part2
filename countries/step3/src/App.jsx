@@ -79,7 +79,7 @@ function App() {
           </ul>
 
           <img src={filteredCountries[0].flags.png} alt={`${filteredCountries[0].name.common} flag`} width="150" />
-
+           {/* weather code */}
           {weather && (
             <div>
               <h2>Weather in {weather.name}</h2>
@@ -153,7 +153,7 @@ function App() {
           )}
         </div>
       )}
-
+      {/* logic for more than 10 option */}
       {filteredCountries.length > 10 && (
         <p>Too many matches, specify another filter.</p>
       )}
