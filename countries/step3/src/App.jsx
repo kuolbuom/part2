@@ -95,18 +95,7 @@ function App() {
         </div>
       )}
 
-      {filteredCountries.length > 1 && filteredCountries.length <= 10 && (
-        // 2–10 countries → show only names
-        <div>
-          {filteredCountries.map(country => (
-            <div key={country.name.common}>
-              {country.name.common}
-              <button onClick={() => setSelectedCountry(country)}>
-                Show
-              </button>
-            </div>
-          ))}
-           {/* code for selected countries */}
+      {/* code for selected countries */}
           {selectedCountry && (
             <div>
               <h1>{selectedCountry.name.common}</h1>
@@ -149,6 +138,18 @@ function App() {
               <div>Wind: {weather.wind.speed} m/s</div>
             </div>
           )}
+
+      {!selectedCountry && filteredCountries.length > 1 && filteredCountries.length <= 10 && (
+        // 2–10 countries → show only names
+        <div>
+          {filteredCountries.map(country => (
+            <div key={country.name.common}>
+              {country.name.common}
+              <button onClick={() => setSelectedCountry(country)}>
+                Show
+              </button>
+            </div>
+          ))}
         </div>
       )}
       {/* logic for more than 10 option */}
