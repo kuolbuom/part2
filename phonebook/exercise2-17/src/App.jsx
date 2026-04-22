@@ -6,7 +6,7 @@ import personServices from './services/persons'
 import Notification from './components/Notification'
 import Notification2 from './components/Notification2'
 import Notification3 from './components/Notification3'
-
+import Notification4 from './components/Notification4'
 
 
 const App = () => {
@@ -17,6 +17,8 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [replaceMessage, setReplaceMessage] = useState(null)
   const [showMessage, setShowMessage] = useState(null)
+  const [validationError, setValidationError] = useState(null)
+  
 
   useEffect(() => {
     personServices.getAll().then(response => {
@@ -69,6 +71,13 @@ const App = () => {
           setMessage(null)
         }, 10000)
       })
+      .catch(error => {
+        setValidationError(`Person validation failed: name: Path  'name'('${newName}', length 2) is shorter than the minimum allowed length (3).`)
+        setTimeout(() =>{
+          setValidationError(null)
+        },10000)
+        console.log('validation Error',error.response.data.error)
+      })
   }
 
   setNewName('')
@@ -97,6 +106,7 @@ const App = () => {
       <Notification message={message} />
       <Notification2 replaceMessage={replaceMessage} />
       <Notification3 showMessage={showMessage} />
+      <Notification4 validationError={validationError}/>
       <Filter filter = {filter} setFilter={setFilter}  />
 
         <h1><p>Add a new</p></h1>
