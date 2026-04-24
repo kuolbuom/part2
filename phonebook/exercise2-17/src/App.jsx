@@ -7,6 +7,7 @@ import Notification from './components/Notification'
 import Notification2 from './components/Notification2'
 import Notification3 from './components/Notification3'
 import Notification4 from './components/Notification4'
+import Notification5 from './components/Notification5'
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
   const [replaceMessage, setReplaceMessage] = useState(null)
   const [showMessage, setShowMessage] = useState(null)
   const [validationError, setValidationError] = useState(null)
+  const [deleteMessage, setDeleteMessage] = useState(null)
 
 
   useEffect(() => {
@@ -92,7 +94,10 @@ const App = () => {
     if (window.confirm(`Delete name: ${numberId.name} and number: ${numberId.number} `)) {
       personServices.remove(id).then(response => {
         setPersons(persons.filter(p => p.id !== id))
-
+        setDeleteMessage(`${numberId.name} Deleted successfully`)
+        setTimeout(()=> {
+          setDeleteMessage(null)
+        },10000)
       })
     }
     console.log('number ' + id + ' needs to be deleted')
@@ -110,6 +115,7 @@ const App = () => {
       <Notification2 replaceMessage={replaceMessage} />
       <Notification3 showMessage={showMessage} />
       <Notification4 validationError={validationError} />
+      <Notification5 deleteMessage={deleteMessage} />
       <Filter filter={filter} setFilter={setFilter} />
 
       <h1><p>Add a new</p></h1>
