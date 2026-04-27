@@ -24,6 +24,11 @@
       "id": "5",
       "name": "Kuol Buom",
       "number": "0994000999"
+    },
+    {
+      "id": "52dc",
+      "name": "ombeni",
+      "number": "111"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
