@@ -1,0 +1,47 @@
+.error{
+    color: green;
+    background-color: lightgray;
+    border-style: solid;
+    border-color: green;
+    border-width: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.delError{
+     color: red;
+    background-color: lightgray;
+    border-style: solid;
+    border-color: red;
+    border-width: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.replace{
+    color: green;
+    background-color: lightgray;
+    border-style: solid;
+    border-color: green;
+    border-width: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.remove{
+     color: red;
+    background-color: lightgray;
+    border-style: solid;
+    border-color: red;
+    border-width: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
